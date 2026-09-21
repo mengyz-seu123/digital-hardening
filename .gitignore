@@ -7,7 +7,5 @@ results/
 *.so
 *.vvp
 *.log
-figures/*.pdf
-figures/*.png
 downloads/
 tools/

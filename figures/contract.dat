@@ -1,7 +1,0 @@
-key value
-area_cap_pct 20.0
-sc_deadline_ns 1000.0
-dvdt_cases 54
-primary_selected_bits 2-5-6
-transfer_sequential_bits 4
-transfer_proposed_bits 1
