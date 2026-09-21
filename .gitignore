@@ -1,0 +1,14 @@
+__pycache__/
+*.py[cod]
+.venv/
+.env
+.env.*
+code/**/results/
+code/**/runs/
+*.so
+*.vvp
+*.log
+figures/*.pdf
+figures/*.png
+downloads/
+tools/

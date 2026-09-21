@@ -1,0 +1,19 @@
+[
+  {
+    "file": "oss-cad-suite-linux-x64-20260908.tgz",
+    "url": "https://github.com/YosysHQ/oss-cad-suite-build/releases/download/2026-09-08/oss-cad-suite-linux-x64-20260908.tgz",
+    "sha256": "dcf9c72b3d666bc345b3afab33fabea154ff6c1196b6563d37a0b389a1402773",
+    "github_digest": "sha256:dcf9c72b3d666bc345b3afab33fabea154ff6c1196b6563d37a0b389a1402773",
+    "release": "2026-09-08"
+  },
+  {
+    "url": "https://archive.ubuntu.com/ubuntu/pool/universe/o/opensta/opensta_0~20191111gitc018cb2+dfsg-1build1_amd64.deb",
+    "sha256": "b1272a4816bc2c67098872f39820f27b4dddf640205e09a31444c71c9fe41e9e",
+    "file": "opensta_0~20191111gitc018cb2+dfsg-1build1_amd64.deb"
+  },
+  {
+    "url": "https://archive.ubuntu.com/ubuntu/pool/universe/o/opensta/opensta_0~20191111gitc018cb2+dfsg.orig.tar.xz",
+    "sha256": "0018afff74fb12f963d8a95227552f9b391d4f281f39b68186dff91244c0d701",
+    "file": "opensta_0~20191111gitc018cb2+dfsg.orig.tar.xz"
+  }
+]

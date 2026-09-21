@@ -1,0 +1,18 @@
+{
+  "files": [
+    {
+      "repository": "The-OpenROAD-Project/OpenROAD-flow-scripts",
+      "commit": "31e744df6a12ae09760820dc977d2b2488c9b0fe",
+      "url": "https://raw.githubusercontent.com/The-OpenROAD-Project/OpenROAD-flow-scripts/31e744df6a12ae09760820dc977d2b2488c9b0fe/flow/platforms/nangate45/lib/NangateOpenCellLibrary_typical.lib",
+      "path": "lib/NangateOpenCellLibrary_typical.lib",
+      "sha256": "8d540a4d4cf6d09d27c87ad067857a9c0c2eeb023ab7a56e058cd3113db4e9b1"
+    },
+    {
+      "repository": "The-OpenROAD-Project/OpenROAD-flow-scripts",
+      "commit": "31e744df6a12ae09760820dc977d2b2488c9b0fe",
+      "url": "https://raw.githubusercontent.com/The-OpenROAD-Project/OpenROAD-flow-scripts/31e744df6a12ae09760820dc977d2b2488c9b0fe/flow/platforms/nangate45/LICENSE",
+      "path": "licenses/nangate45.txt",
+      "sha256": "0d542e0c8804e39aa7f37eb00da5a762149dc682d7829451287e11b938e94594"
+    }
+  ]
+}
