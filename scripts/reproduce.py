@@ -9,7 +9,7 @@ import subprocess
 import sys
 
 ROOT = Path(__file__).resolve().parents[1]
-CODE = ROOT / 'code'
+CODE = ROOT / 'src'
 
 def preflight():
     if sys.version_info < (3, 11):
@@ -18,9 +18,9 @@ def preflight():
         raise SystemExit('Run the full EDA pipeline on Linux x86-64 (WSL2 is supported).')
     if any(c.isspace() for c in str(ROOT)):
         raise SystemExit('Use a checkout path without spaces; the EDA scripts use unquoted paths.')
-    for name in ('numpy', 'scipy'):
+    for name in ('numpy',):
         importlib.import_module(name)
-    missing = [x for x in ('yosys', 'iverilog', 'vvp', 'sta', 'ngspice', 'cc') if not shutil.which(x)]
+    missing = [x for x in ('yosys', 'iverilog', 'vvp', 'sta', 'ngspice') if not shutil.which(x)]
     if missing:
         raise SystemExit('Missing tools: ' + ', '.join(missing))
     for item in json.loads((ROOT / 'sources.lock').read_text())['files']:
@@ -36,27 +36,25 @@ def main():
     preflight()
     if args.check:
         return
-    for name in ('v091', 'v095', 'v130', 'v140', 'v144'):
-        if (CODE / name / 'results').exists():
-            raise SystemExit('Existing results found. Use a fresh extraction for a new run: ' + name)
-    subprocess.run(['cc', '-O3', '-shared', '-fPIC', str(CODE / 'src/knapsack.c'), '-o', str(CODE / 'src/knapsack.so'), '-lm'], check=True)
+    if (ROOT / 'results').exists():
+        raise SystemExit('Existing results found. Use a fresh extraction for a new run.')
     def run(script, *args):
         subprocess.run([sys.executable, str(CODE / script), *map(str, args)], cwd=ROOT, check=True)
     for script in (
-        'v091/src/build_sic_asset.py', 'v091/src/build_sic_hardware.py', 'v091/src/build_sic_pool.py',
-        'v095/src/build_ext_asset.py', 'v095/src/build_ext_hardware.py', 'v095/src/build_ext_pool.py',
+        'build_primary_asset.py', 'build_primary_hardware.py', 'build_primary_pool.py',
+        'build_transfer_asset.py', 'build_transfer_hardware.py', 'build_transfer_pool.py',
     ):
         run(script)
-    primary = CODE / 'v130/results/minloop-01'
-    complete = CODE / 'v140/results/completion-aware-01'
-    audit = CODE / 'v144/results/separability-audit-01'
+    primary = ROOT / 'results/interface'
+    complete = ROOT / 'results/completion'
+    audit = ROOT / 'results/separability'
     liberty = ROOT / 'lib/NangateOpenCellLibrary_typical.lib'
-    run('v130/src/run_fixed.py', '--out', primary, '--liberty', liberty)
-    run('v140/src/run_completion_fixed.py', '--out', complete, '--primary-out', primary, '--liberty', liberty)
+    run('primary_interface.py', '--out', primary, '--liberty', liberty)
+    run('completion.py', '--out', complete, '--primary-out', primary, '--liberty', liberty)
     result = json.loads((complete / 'summary.json').read_text())
     if result['status'] != 'completed' or not all(result[k] for k in ('h1_oracle_match', 'h2_ordinary_nonregression', 'h3_primary_nonworse', 'h4_transfer_completion_aware')):
         raise RuntimeError('Completion-aware acceptance checks failed.')
-    run('v144/src/separability_audit.py', '--artifact-root', CODE, '--out', audit)
+    run('separability.py', '--artifact-root', ROOT, '--out', audit)
     result = json.loads((audit / 'summary.json').read_text())
     if result['status'] != 'completed' or not result['all_separable'] or not result['count_contract_pass'] or result['total_signature_comparisons'] != 162:
         raise RuntimeError('Separability acceptance checks failed.')

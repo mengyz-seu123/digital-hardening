@@ -8,19 +8,19 @@ import sys
 import unittest
 
 ROOT = Path(__file__).resolve().parents[1]
-CODE = ROOT / 'code'
+CODE = ROOT / 'src'
 sys.dont_write_bytecode = True
-sys.path[:0] = [str(p) for p in sorted(CODE.glob('*/src'))] + [str(CODE / 'src')]
+sys.path[:0] = [str(CODE), str(ROOT / 'tests')]
 for item in json.loads((ROOT / 'sources.lock').read_text())['files']:
     assert hashlib.sha256((ROOT / item['path']).read_bytes()).hexdigest() == item['sha256'], item['path']
 for p in CODE.rglob('*.py'):
     ast.parse(p.read_text(encoding='utf-8'), filename=str(p))
-for module in ('build_sic_asset', 'build_sic_hardware', 'build_sic_pool', 'build_ext_asset', 'build_ext_hardware', 'build_ext_pool', 'completion_aware', 'separability_audit'):
+for module in ('build_primary_asset', 'build_primary_hardware', 'build_primary_pool', 'build_transfer_asset', 'build_transfer_hardware', 'build_transfer_pool', 'completion', 'separability'):
     importlib.import_module(module)
 import hardware
 assert hardware.LIB == ROOT / 'lib/NangateOpenCellLibrary_typical.lib'
 assert hardware.LIB.is_file()
-suite = unittest.defaultTestLoader.loadTestsFromName('test_direct_stress')
+suite = unittest.defaultTestLoader.discover(str(ROOT / 'tests'))
 result = unittest.TextTestRunner(verbosity=2).run(suite)
 if not result.wasSuccessful():
     raise SystemExit(1)
